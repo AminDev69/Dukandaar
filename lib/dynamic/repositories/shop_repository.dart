@@ -4,11 +4,11 @@ import 'package:http/http.dart';
 
 class ShopRepository {
   //POST
-  Future postshop(ShopModel shopModel) async {
+  Future postshop(ShopModel shopModel, int userId) async {
     var jsonBody = jsonEncode(shopModel);
     //URL
     Response response = await post(
-      "",
+      "https://dukandaar.herokuapp.com/shops?userId=${userId}",
       headers: {"Content-Type": "application/json"},
       body: jsonBody,
     );

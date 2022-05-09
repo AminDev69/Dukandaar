@@ -8,6 +8,8 @@ import 'package:otp_text_field/otp_field_style.dart';
 import '../buttons/custom_button_medium.dart';
 
 class OtpDialog extends StatefulWidget {
+  String email;
+  OtpDialog({this.email});
   @override
   State<OtpDialog> createState() => _OtpDialogState();
 }
@@ -47,7 +49,9 @@ class _OtpDialogState extends State<OtpDialog> {
             textColor: theme.primaryColorDark,
             backgroundColor: theme.primaryColor,
             onPressed: () {
-              Get.to(PersonalInfo());
+              Get.to(PersonalInfo(
+                email: widget.email,
+              ));
             },
           )
         ],

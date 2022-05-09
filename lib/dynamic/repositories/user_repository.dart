@@ -4,10 +4,10 @@ import 'package:http/http.dart';
 
 class UserRepository {
   //getOne
-  Future<UserModel> getUser() async {
+  Future<UserModel> getUser(int id) async {
     //URL
     Response jsonBody = await get(
-      "",
+      "https://dukandaar.herokuapp.com/users/$id",
       headers: {"Content-Type": "application/json"},
     );
     // CHECk IF BODY PRESENT BY PRINTING
@@ -26,19 +26,22 @@ class UserRepository {
 
   //POST
 
-  Future postUser(UserModel userModel) async {
-    var jsonBody = jsonEncode(userModel);
+  Future<UserModel> postUser(UserModel userModel) async {
+    dynamic json = userModel.toJson();
+    var jsonBody = jsonEncode(json);
     //URL
     Response response = await post(
-      "",
+      "https://dukandaar.herokuapp.com/users",
       headers: {"Content-Type": "application/json"},
       body: jsonBody,
     );
     // CHEKC IF BODY PRESENT BY PRINTING......
     print(response.body);
-    //OPTIONAL....
-    if (response.statusCode == 200) {
-      print("posted !!!");
+    //OPTIONAL....// if 200 or 201 is present then it will get execute
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      dynamic dartBody = jsonDecode(response.body);
+      UserModel user = UserModel.fromJson(dartBody);
+      return user;
     } else {
       throw "can't post user";
     }

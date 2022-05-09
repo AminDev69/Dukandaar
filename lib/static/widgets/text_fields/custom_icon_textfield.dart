@@ -6,9 +6,14 @@ class CutomIconTextfield extends StatefulWidget {
   IconData icon;
   bool obsecureText;
   final TextInputType keyboardType;
+  TextEditingController controller;
 
   CutomIconTextfield(
-      {this.name, this.icon, this.keyboardType, this.obsecureText});
+      {this.name,
+      this.icon,
+      this.keyboardType,
+      this.obsecureText,
+      this.controller});
   @override
   State<CutomIconTextfield> createState() => _CutomIconTextfieldState();
 }
@@ -23,6 +28,7 @@ class _CutomIconTextfieldState extends State<CutomIconTextfield> {
       keyboardType: widget.keyboardType,
       obscureText: widget.obsecureText,
       cursorColor: theme.primaryColorDark,
+      controller: widget.controller,
       style: TextStyle(
         fontSize: 18.0,
         color: theme.primaryColorDark,

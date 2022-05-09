@@ -12,6 +12,8 @@ class Register extends StatefulWidget {
 }
 
 class _Register extends State<Register> {
+  TextEditingController emailController = TextEditingController();
+
   // CustomColors _colors = CustomColors();
   @override
   Widget build(BuildContext context) {
@@ -41,16 +43,12 @@ class _Register extends State<Register> {
                   ),
                 ),
                 SizedBox(height: 45.0),
-                // CutomIconTextfield(
-                //   name: "Username",
-                //   icon: Icons.person,
-                //   obsecureText: false,
-                // ),
                 SizedBox(height: 25.0),
                 CutomIconTextfield(
                   name: "Email",
                   icon: Icons.email,
                   obsecureText: false,
+                  controller: emailController,
                 ),
                 SizedBox(height: 25.0),
                 CutomIconTextfield(
@@ -63,7 +61,9 @@ class _Register extends State<Register> {
                   name: "Register",
                   onPressed: () {
                     _customToast.showToast("Successfully registered");
-                    Get.to(OtpScreen());
+                    Get.to(OtpScreen(
+                      email: emailController.text,
+                    ));
                   },
                 ),
                 SizedBox(height: 20.0),

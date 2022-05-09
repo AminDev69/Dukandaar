@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:dukandaar/dynamic/bloc/distributor/distributor_bloc.dart';
 import 'package:dukandaar/dynamic/bloc/theme/theme_bloc.dart';
+import 'package:dukandaar/dynamic/bloc/user/user_bloc.dart';
+import 'package:dukandaar/static/views/loader.dart';
 import 'package:dukandaar/static/views/orders/orders.dart';
 import 'package:dukandaar/static/utils/app_themes.dart';
 import 'package:dukandaar/static/utils/theme_preference.dart';
@@ -56,164 +59,181 @@ class _NavBarState extends State<NavBar> {
     //THEME
     var theme = Theme.of(context);
     return Drawer(
-      child: Container(
-        color: theme.primaryColor,
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                "Dukandaar.com",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              accountEmail: Text(
-                "Dukandaar@gmail.com",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                child: Container(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: theme.primaryColorDark,
-                          borderRadius: BorderRadius.circular(100)),
-                      child: GestureDetector(
-                        onTap: () {
-                          bottomsheets(
-                              context: context,
-                              onPressedCamera: () {
-                                getImage();
+      child: BlocConsumer<UserBloc, UserState>(
+        builder: (context, state) {
+          if (state is UserInitial) {
+            return Loader();
+          } else if (state is UserLoading || state is UserFailure) {
+            return Loader();
+          } else if (state is UserLoaded) {
+            return Container(
+              color: theme.primaryColor,
+              child: ListView(
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: Text(
+                      state.userModel.name ?? "",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    accountEmail: Text(
+                      state.userModel.email ?? "",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    currentAccountPicture: CircleAvatar(
+                      child: Container(
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: theme.primaryColorDark,
+                                borderRadius: BorderRadius.circular(100)),
+                            child: GestureDetector(
+                              onTap: () {
+                                bottomsheets(
+                                    context: context,
+                                    onPressedCamera: () {
+                                      getImage();
+                                    },
+                                    onPressedGallery: () {
+                                      getImageCamera();
+                                    });
                               },
-                              onPressedGallery: () {
-                                getImageCamera();
-                              });
-                        },
-                        child: Icon(
-                          Icons.edit,
-                          size: 18,
-                          color: theme.primaryColor,
+                              child: Icon(
+                                Icons.edit,
+                                size: 18,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          image: DecorationImage(
+                              image: AssetImage('assets/user_profile.png'),
+                              fit: BoxFit.cover),
                         ),
                       ),
                     ),
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    image: DecorationImage(
-                        image: AssetImage('assets/user_profile.png'),
-                        fit: BoxFit.cover),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      color: theme.primaryColorDark,
+                    ),
+                    title: Text(
+                      "Edit profile",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.defaultDialog(
+                          title: "Edit Profile",
+                          titleStyle: TextStyle(
+                            fontSize: 20,
+                            color: theme.primaryColorDark,
+                          ),
+                          backgroundColor: theme.primaryColor,
+                          content: EditProfileDialog());
+                    },
                   ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.person,
-                color: theme.primaryColorDark,
-              ),
-              title: Text(
-                "Edit profile",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              onTap: () {
-                Get.defaultDialog(
-                    title: "Edit Profile",
-                    titleStyle: TextStyle(
-                      fontSize: 20,
+                  ListTile(
+                    leading: Icon(
+                      Icons.book,
                       color: theme.primaryColorDark,
                     ),
-                    backgroundColor: theme.primaryColor,
-                    content: EditProfileDialog());
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.book,
-                color: theme.primaryColorDark,
-              ),
-              title: Text(
-                "My orders",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              onTap: () {
-                Get.to(Orders());
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.storefront,
-                color: theme.primaryColorDark,
-              ),
-              title: Text(
-                "Edit Shop",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              onTap: () {
-                Get.defaultDialog(
-                    title: "Edit Shop",
-                    titleStyle: TextStyle(
-                      fontSize: 20,
+                    title: Text(
+                      "My orders",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.to(Orders());
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.storefront,
                       color: theme.primaryColorDark,
                     ),
-                    backgroundColor: theme.primaryColor,
-                    content: EditShopDialog());
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.palette,
-                color: theme.primaryColorDark,
-              ),
-              title: Text(
-                "Change theme",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              trailing: Switch(
-                  activeColor: theme.primaryColorDark,
-                  activeTrackColor: theme.primaryColorDark,
-                  inactiveTrackColor: theme.primaryColorDark,
-                  inactiveThumbColor: theme.primaryColorDark,
-                  value: ThemePreferences.getTheme() == darkOrLight.lightTheme,
-                  onChanged: (val) {
-                    _setTheme(val);
-                  }),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.logout,
-                color: theme.primaryColorDark,
-              ),
-              title: Text(
-                "Logout",
-                style: TextStyle(
-                  color: theme.primaryColorDark,
-                ),
-              ),
-              onTap: () {
-                Get.defaultDialog(
-                    title: "Are You sure ?",
-                    titleStyle: TextStyle(
-                      fontSize: 20,
+                    title: Text(
+                      "Edit Shop",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.defaultDialog(
+                          title: "Edit Shop",
+                          titleStyle: TextStyle(
+                            fontSize: 20,
+                            color: theme.primaryColorDark,
+                          ),
+                          backgroundColor: theme.primaryColor,
+                          content: EditShopDialog());
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.palette,
                       color: theme.primaryColorDark,
                     ),
-                    backgroundColor: theme.primaryColor,
-                    content: LogoutDialog());
-              },
-            ),
-          ],
-        ),
+                    title: Text(
+                      "Change theme",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    trailing: Switch(
+                        activeColor: theme.primaryColorDark,
+                        activeTrackColor: theme.primaryColorDark,
+                        inactiveTrackColor: theme.primaryColorDark,
+                        inactiveThumbColor: theme.primaryColorDark,
+                        value: ThemePreferences.getTheme() ==
+                            darkOrLight.lightTheme,
+                        onChanged: (val) {
+                          _setTheme(val);
+                        }),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: theme.primaryColorDark,
+                    ),
+                    title: Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.defaultDialog(
+                          title: "Are You sure ?",
+                          titleStyle: TextStyle(
+                            fontSize: 20,
+                            color: theme.primaryColorDark,
+                          ),
+                          backgroundColor: theme.primaryColor,
+                          content: LogoutDialog());
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container();
+        },
+        listener: (context, state) {
+          if (state is UserFailure) {
+            return CustomToast().showToast(state.error);
+          }
+        },
       ),
     );
   }

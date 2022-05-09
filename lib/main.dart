@@ -1,10 +1,16 @@
 import 'package:dukandaar/dynamic/bloc/theme/theme_bloc.dart';
+import 'package:dukandaar/dynamic/bloc/user/user_bloc.dart';
 
 import 'package:dukandaar/static/utils/theme_preference.dart';
 import 'package:dukandaar/static/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import 'dynamic/bloc/distributor/distributor_bloc.dart';
+import 'dynamic/bloc/item/item_bloc.dart';
+import 'dynamic/bloc/order/order_bloc.dart';
+import 'dynamic/bloc/shop/shop_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +24,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(create: (context) => DistributorBloc()),
+        BlocProvider(create: (context) => UserBloc()),
+        BlocProvider(create: (context) => ShopBloc()),
+        BlocProvider(create: (context) => ItemBloc()),
+        BlocProvider(create: (context) => OrderBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {

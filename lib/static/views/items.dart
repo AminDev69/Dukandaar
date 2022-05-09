@@ -18,7 +18,7 @@ class Items extends StatefulWidget {
 class _ItemsState extends State<Items> {
   @override
   Widget build(BuildContext context) {
-    final ItemController itemController = Get.put(ItemController());
+    // final ItemController itemController = Get.put(ItemController());
     //THEME
     var theme = Theme.of(context);
     return Scaffold(
@@ -54,10 +54,11 @@ class _ItemsState extends State<Items> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: itemController.itemModelList.length,
+                // itemCount: itemController.itemModelList.length,
                 itemBuilder: (context, index) {
                   return CustomItemCard(
-                      itemModel: itemController.itemModelList[index]);
+                      // itemModel: itemController.itemModelList[index],
+                      );
                 },
               ),
             ),

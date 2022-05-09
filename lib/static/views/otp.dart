@@ -15,12 +15,14 @@ import 'package:otp_text_field/otp_field_style.dart';
 // import 'package:otp_text_field/style.dart';
 
 class OtpScreen extends StatefulWidget {
+  String email;
+  OtpScreen({this.email});
+
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  // CustomColors _colors = CustomColors();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -53,18 +55,17 @@ class _OtpScreenState extends State<OtpScreen> {
                       obsecureText: false,
                     )),
                 SizedBox(height: 20.0),
-                GestureDetector(
-                  onTap: () {
-                    // Get.to(showAlertDialog(context)());
+                CustomButton(
+                  name: "Sign in with OTP",
+                  onPressed: () {
                     Get.defaultDialog(
                         title: "Verify",
                         titleStyle: TextStyle(color: theme.primaryColorDark),
                         backgroundColor: theme.primaryColor,
-                        content: OtpDialog());
+                        content: OtpDialog(
+                          email: widget.email,
+                        ));
                   },
-                  child: CustomButton(
-                    name: "Sign in with OTP",
-                  ),
                 ),
               ],
             ),

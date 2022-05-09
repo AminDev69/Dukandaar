@@ -1,8 +1,10 @@
 // import 'package:dukandaar/dynamic/models/distributor_dummy_model.dart';
+import 'package:dukandaar/dynamic/bloc/item/item_bloc.dart';
 import 'package:dukandaar/dynamic/models/distributor_model.dart';
 import 'package:dukandaar/static/views/items.dart';
 // import 'package:dukandaar/static/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../buttons/custom_button_medium.dart';
@@ -110,6 +112,8 @@ class _CustomDistributorCardState extends State<CustomDistributorCard> {
                           backgroundColor: theme.primaryColor,
                           name: "Items",
                           onPressed: () {
+                            BlocProvider.of<ItemBloc>(context)
+                                .add(GetItemEvent());
                             Get.to(Items());
                           },
                         ),

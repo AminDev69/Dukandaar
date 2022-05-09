@@ -22,7 +22,7 @@ class _CustomButtonState extends State<CustomButton> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15),
-        onPressed: widget.onPressed,
+        onPressed: () => widget.onPressed(),
         child: Text(
           widget.name,
           textAlign: TextAlign.center,

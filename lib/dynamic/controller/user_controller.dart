@@ -1,23 +1,23 @@
-import 'package:dukandaar/dynamic/repositories/user_repository.dart';
-import 'package:get/get.dart';
+// import 'package:dukandaar/dynamic/repositories/user_repository.dart';
+// import 'package:get/get.dart';
 
-class UserController extends GetxController {
-  // Post
+// class UserController extends GetxController {
+//   // Post
 
-  var userModel = [].obs;
+//   var userModel = [].obs;
 
-  UserRepository userRepository = UserRepository();
+//   UserRepository userRepository = UserRepository();
 
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    postUser();
-  }
+//   void onInit() {
+//     // TODO: implement onInit
+//     super.onInit();
+//     postUser();
+//   }
 
-  void postUser() async {
-    var users = await userRepository.postUser(userModel);
-    if (users != null) {
-      userModel(users);
-    }
-  }
-}
+//   void postUser() async {
+//     var users = await userRepository.postUser(userModel);
+//     if (users != null) {
+//       userModel(users);
+//     }
+//   }
+// }

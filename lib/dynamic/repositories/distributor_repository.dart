@@ -8,7 +8,7 @@ class DistributorRepository {
   Future<List<DistributorModel>> getAllDistributor() async {
     //URL
     Response jsonBodyList = await get(
-      "",
+      "https://dukandaar.herokuapp.com/distributors",
       headers: {"Content-Type": "application/json"},
     );
     // CHECk IF BODY PRESENT BY PRINTING
@@ -17,10 +17,12 @@ class DistributorRepository {
     if (jsonBodyList.statusCode == 200) {
       List<dynamic> dartBodyList = jsonDecode(jsonBodyList.body);
       print(dartBodyList);
+      // NOW SETTING THIS DART BODY IN  LIST OF MODELS....
       List<DistributorModel> distributorModelList = dartBodyList
           .map((dynamic distributorModelList) =>
               DistributorModel.fromJson(distributorModelList))
           .toList();
+
       print(distributorModelList);
       return distributorModelList;
     } else {
